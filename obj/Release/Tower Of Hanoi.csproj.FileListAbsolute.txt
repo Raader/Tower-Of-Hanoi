@@ -1,0 +1,9 @@
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\bin\Release\Tower Of Hanoi.exe.config
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\bin\Release\Tower Of Hanoi.exe
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\bin\Release\Tower Of Hanoi.pdb
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower Of Hanoi.csprojAssemblyReference.cache
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower_Of_Hanoi.MainForm.resources
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower_Of_Hanoi.Properties.Resources.resources
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower Of Hanoi.csproj.GenerateResource.cache
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower Of Hanoi.exe
+D:\TestVisualFrom\TestFormApp\Tower Of Hanoi\obj\Release\Tower Of Hanoi.pdb
