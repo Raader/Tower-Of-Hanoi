@@ -17,7 +17,7 @@ namespace Tower_Of_Hanoi
         public MainForm()
         {
             InitializeComponent();
-            hanoiGame = new HanoiGame(5);
+            hanoiGame = new HanoiGame(100);
             HanoiVisual hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
         }
 
@@ -90,18 +90,38 @@ namespace Tower_Of_Hanoi
         void CalculateSize()
         {
             Panel panel = panels[0];
-            panelHeight = (panel.Height - padding) / game.blockCount / 4;
-            panelWidhtFactor = 180 / game.blockCount;
+            int factor;
+            if (game.blockCount > 50)
+            {
+                factor = 1;
+            }
+            else if (game.blockCount > 25)
+            {
+                factor = 2;
+            }
+            else if(game.blockCount > 10)
+            {
+                factor = 3;
+            }
+            else
+            {
+                factor = 4;
+            }
+            panelHeight = (panel.Height - padding) / (game.blockCount * factor);
+            panelWidhtFactor = 200 / game.blockCount;
         }
 
         void CreateBlocks()
         {
             blockInfos = new BlockInfo[game.blockCount];
+            bool bol = true;
             for (int i = 0; i < blockInfos.Length; i++)
             {
-                int width = panelWidhtFactor * (i + 1);
-                BlockInfo block = new BlockInfo(game.towers[0][i], Color.Red, width, panelHeight,gameArea);
+                int width = Math.Max(panelWidhtFactor * (i + 1), panels[0].Width + 10);
+                Color color = bol ? Color.Red : Color.Blue;
+                BlockInfo block = new BlockInfo(game.towers[0][i], color, width, panelHeight,gameArea);
                 blockInfos[i] = block;
+                bol = !bol;
             }
         }
 
@@ -150,7 +170,6 @@ namespace Tower_Of_Hanoi
         int CalculateX(HanoiVisual.BlockInfo block)
         {
             int xPos = (panel.Location.X + panel.Width / 2) - (block.width / 2);
-            Console.WriteLine(xPos);
             return xPos;
         }
 
