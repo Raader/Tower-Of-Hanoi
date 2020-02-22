@@ -97,8 +97,8 @@ namespace Tower_Of_Hanoi
         public Tower(int size)
         {
             blocks = new Block[size];
-            blockCount = size;
-    }
+            blockCount = size;          
+        }
 
         public Block GetTopBlock()
         {

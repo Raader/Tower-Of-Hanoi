@@ -12,24 +12,12 @@ namespace Tower_Of_Hanoi
 {
     public partial class MainForm : Form
     {
-        Label[] labels;
-        Label label;
         HanoiGame hanoiGame;
+
         public MainForm()
         {
             InitializeComponent();
-            labels = new Label[3];
-            labels[0] = new Label();
-            label = labels[0];
-            label = null;
-            Console.WriteLine(labels[0]);
             hanoiGame = new HanoiGame(5);
-            Panel[] panels = new Panel[3];
-            panels[0] = tower1;
-            panels[1] = tower2;
-            panels[2] = tower3;
-            HanoiVisual visual = new HanoiVisual(hanoiGame, panels);
-            VisualTower tower = new VisualTower(hanoiGame.towers[0], tower1, visual,gamePanel);
         }
 
         private void gamePanel_Paint(object sender, PaintEventArgs e)
@@ -45,29 +33,51 @@ namespace Tower_Of_Hanoi
         public int panelHeight;
         public int panelWidhtFactor;
         public int padding = 20;
+        BlockInfo[] blockInfos;
+        VisualTower[] visualTowers;
 
         public class BlockInfo
         {
             public Color color;
             public int width;
             public int height;
+            public Block block;
+            Panel panel;
 
-            public BlockInfo(Color color, int width, int height)
+            public BlockInfo(Block block,Color color, int width, int height)
             {
                 this.color = color;
                 this.width = width;
                 this.height = height;
+                this.block = block;
+                panel = new Panel();
+                panel.Height = height;
+                panel.Width = width;
+                panel.BackColor = color;
+                panel.BringToFront();
+            }
+
+            public void ChangePosition(int x,int y)
+            {
+                panel.Location = new Point(x, y);
             }
         }
 
-        public HanoiVisual(HanoiGame hanoiGame, Panel[] panels)
+        public HanoiVisual(HanoiGame hanoiGame, Panel panelA, Panel panelB, Panel panelC)
         {
             game = hanoiGame;
-            this.panels = panels.Length > 3 ? null : panels;
+            panels = new Panel[3];
+            panels[0] = panelA;
+            panels[1] = panelB;
+            panels[2] = panelC;
             CalculateSize();
-            //Construct();
+            CreateBlocks();            
         }
 
+        void CreateTowers()
+        {
+            visualTowers = new VisualTower[3];
+        }
         void CalculateSize()
         {
             Panel panel = panels[0];
@@ -75,21 +85,23 @@ namespace Tower_Of_Hanoi
             panelWidhtFactor = 100 / game.blockCount;
         }
 
-        void Construct()
+        void CreateBlocks()
         {
-            for (int i = 0; i < 3; i++)
+            blockInfos = new BlockInfo[game.blockCount];
+            for (int i = 0; i < blockInfos.Length; i++)
             {
-                Tower tower = game.towers[i];
-                Panel panel = panels[3];
-                for(int y = 0; y< game.blockCount; y++)
-                {
-                    Block block = tower[y];
-                    if (block == null)
-                    {
-                        continue;
-                    }
+                int width = panelWidhtFactor * (i + 1);
+                BlockInfo block = new BlockInfo(game.towers[0][i], Color.Red, width, panelHeight);
+                blockInfos[i] = block;
+            }
+        }
 
-                }
+        void SetupBlock()
+        {
+            for(int i = 0; i < blockInfos.Length; i++)
+            {
+                BlockInfo block = blockInfos[i];
+               
             }
         }
 
@@ -102,34 +114,27 @@ namespace Tower_Of_Hanoi
 
     class VisualTower
     {
-        public Tower tower;
         public Panel panel;
         int[] locations;
-        HanoiVisual hanoiVisual;
+        HanoiVisual visual;
+        int blockCount;
 
-        public VisualTower(Tower tower, Panel panel, HanoiVisual visual,Panel gamePanel)
+        public VisualTower(Panel panel, HanoiVisual visual, int blockCount)
         {
-            this.tower = tower;
             this.panel = panel;
-            this.hanoiVisual = visual;
+            this.visual = visual;
+            this.blockCount = blockCount;
             CalculateYPositions();
-            Panel newPanel = new Panel();
-            newPanel.Height = hanoiVisual.panelHeight;
-            newPanel.Width = hanoiVisual.panelWidhtFactor * 5;
-            newPanel.BackColor = Color.Red;
-            newPanel.Location = new Point(CalculateX(new HanoiVisual.BlockInfo(Color.White, hanoiVisual.panelWidhtFactor * 5, hanoiVisual.panelHeight)), locations[0]);
-            gamePanel.Controls.Add(newPanel);
-            newPanel.BringToFront();
         }
 
         void CalculateYPositions()
         {
-            locations = new int[tower.blockCount];
-            int y = panel.Location.Y + panel.Height - hanoiVisual.padding;
-            for (int i = tower.blockCount - 1 ; i >= 0; i--)
+            locations = new int[blockCount];
+            int y = panel.Location.Y + panel.Height - visual.padding;
+            for (int i = blockCount - 1 ; i >= 0; i--)
             {
-                locations[i] = y - hanoiVisual.panelHeight / 2;
-                y -= hanoiVisual.panelHeight;
+                locations[i] = y - visual.panelHeight / 2;
+                y -= visual.panelHeight;
             }
         }
 
@@ -138,19 +143,12 @@ namespace Tower_Of_Hanoi
             int xPos = (panel.Location.X + panel.Width / 2) - (block.width / 2);
             return xPos;
         }
-    }
 
-    class VisualBlock
-    {
-        public Block block;
-        public Color color;
-        public Panel panel;
-
-        public VisualBlock(Block block, Color color,Panel panel)
+        void PlaceBlock(HanoiVisual.BlockInfo block, int index)
         {
-            this.block = block;
-            this.color = color;
-            this.panel = panel;
+            int x = CalculateX(block);
+            int y = locations[index];
+            block.ChangePosition(x, y);
         }
     }
 }
