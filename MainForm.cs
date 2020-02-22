@@ -18,6 +18,7 @@ namespace Tower_Of_Hanoi
         {
             InitializeComponent();
             hanoiGame = new HanoiGame(5);
+            HanoiVisual hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
         }
 
         private void gamePanel_Paint(object sender, PaintEventArgs e)
@@ -35,6 +36,7 @@ namespace Tower_Of_Hanoi
         public int padding = 20;
         BlockInfo[] blockInfos;
         VisualTower[] visualTowers;
+        Panel gameArea;
 
         public class BlockInfo
         {
@@ -42,9 +44,8 @@ namespace Tower_Of_Hanoi
             public int width;
             public int height;
             public Block block;
-            Panel panel;
-
-            public BlockInfo(Block block,Color color, int width, int height)
+            public Panel panel;          
+            public BlockInfo(Block block,Color color, int width, int height,Panel gameArea)
             {
                 this.color = color;
                 this.width = width;
@@ -55,6 +56,7 @@ namespace Tower_Of_Hanoi
                 panel.Width = width;
                 panel.BackColor = color;
                 panel.BringToFront();
+                gameArea.Controls.Add(panel);
             }
 
             public void ChangePosition(int x,int y)
@@ -63,26 +65,33 @@ namespace Tower_Of_Hanoi
             }
         }
 
-        public HanoiVisual(HanoiGame hanoiGame, Panel panelA, Panel panelB, Panel panelC)
+        public HanoiVisual(HanoiGame hanoiGame, Panel panelA, Panel panelB, Panel panelC, Panel gameArea)
         {
             game = hanoiGame;
             panels = new Panel[3];
+            this.gameArea = gameArea;
             panels[0] = panelA;
             panels[1] = panelB;
-            panels[2] = panelC;
+            panels[2] = panelC;           
             CalculateSize();
-            CreateBlocks();            
+            CreateTowers();
+            CreateBlocks();
+            SetupBlocks();
         }
 
         void CreateTowers()
         {
             visualTowers = new VisualTower[3];
+            for (int i = 0; i < 3; i++)
+            {
+                visualTowers[i] = new VisualTower(panels[i], this, game.blockCount);
+            }
         }
         void CalculateSize()
         {
             Panel panel = panels[0];
-            panelHeight = (panel.Height - padding) / game.blockCount;
-            panelWidhtFactor = 100 / game.blockCount;
+            panelHeight = (panel.Height - padding) / game.blockCount / 4;
+            panelWidhtFactor = 180 / game.blockCount;
         }
 
         void CreateBlocks()
@@ -91,17 +100,17 @@ namespace Tower_Of_Hanoi
             for (int i = 0; i < blockInfos.Length; i++)
             {
                 int width = panelWidhtFactor * (i + 1);
-                BlockInfo block = new BlockInfo(game.towers[0][i], Color.Red, width, panelHeight);
+                BlockInfo block = new BlockInfo(game.towers[0][i], Color.Red, width, panelHeight,gameArea);
                 blockInfos[i] = block;
             }
         }
 
-        void SetupBlock()
+        void SetupBlocks()
         {
             for(int i = 0; i < blockInfos.Length; i++)
             {
                 BlockInfo block = blockInfos[i];
-               
+                visualTowers[0].PlaceBlock(block, i);
             }
         }
 
@@ -141,14 +150,16 @@ namespace Tower_Of_Hanoi
         int CalculateX(HanoiVisual.BlockInfo block)
         {
             int xPos = (panel.Location.X + panel.Width / 2) - (block.width / 2);
+            Console.WriteLine(xPos);
             return xPos;
         }
 
-        void PlaceBlock(HanoiVisual.BlockInfo block, int index)
+        public void PlaceBlock(HanoiVisual.BlockInfo block, int index)
         {
             int x = CalculateX(block);
             int y = locations[index];
             block.ChangePosition(x, y);
+            block.panel.BringToFront();
         }
     }
 }

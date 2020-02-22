@@ -38,41 +38,43 @@
             // 
             // gamePanel
             // 
+            this.gamePanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.gamePanel.Controls.Add(this.tower3);
             this.gamePanel.Controls.Add(this.tower2);
             this.gamePanel.Controls.Add(this.tower1);
-            this.gamePanel.Location = new System.Drawing.Point(25, 15);
+            this.gamePanel.Location = new System.Drawing.Point(12, 15);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(584, 552);
+            this.gamePanel.Size = new System.Drawing.Size(626, 552);
             this.gamePanel.TabIndex = 0;
             this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.gamePanel_Paint);
             // 
             // tower3
             // 
             this.tower3.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower3.Location = new System.Drawing.Point(473, 48);
+            this.tower3.Location = new System.Drawing.Point(498, 50);
             this.tower3.Name = "tower3";
-            this.tower3.Size = new System.Drawing.Size(25, 465);
+            this.tower3.Size = new System.Drawing.Size(26, 465);
             this.tower3.TabIndex = 2;
             // 
             // tower2
             // 
             this.tower2.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower2.Location = new System.Drawing.Point(273, 48);
+            this.tower2.Location = new System.Drawing.Point(298, 50);
             this.tower2.Name = "tower2";
-            this.tower2.Size = new System.Drawing.Size(25, 465);
+            this.tower2.Size = new System.Drawing.Size(26, 465);
             this.tower2.TabIndex = 1;
             // 
             // tower1
             // 
             this.tower1.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower1.Location = new System.Drawing.Point(73, 48);
+            this.tower1.Location = new System.Drawing.Point(98, 50);
             this.tower1.Name = "tower1";
-            this.tower1.Size = new System.Drawing.Size(25, 465);
+            this.tower1.Size = new System.Drawing.Size(26, 465);
             this.tower1.TabIndex = 0;
             // 
             // sidePanel
             // 
+            this.sidePanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.sidePanel.Location = new System.Drawing.Point(660, 15);
             this.sidePanel.Name = "sidePanel";
             this.sidePanel.Size = new System.Drawing.Size(200, 552);
