@@ -17,7 +17,7 @@ namespace Tower_Of_Hanoi
         public MainForm()
         {
             InitializeComponent();
-            hanoiGame = new HanoiGame(100);
+            hanoiGame = new HanoiGame(5);
             HanoiVisual hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
         }
 
