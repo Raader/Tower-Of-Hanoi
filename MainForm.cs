@@ -13,17 +13,31 @@ namespace Tower_Of_Hanoi
     public partial class MainForm : Form
     {
         HanoiGame hanoiGame;
+        HanoiVisual hanoiVisual;
+        int blockCount = 3;
 
         public MainForm()
         {
             InitializeComponent();
-            hanoiGame = new HanoiGame(5);
-            HanoiVisual hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
+            InitGame();
+        }
+
+        private void InitGame()
+        {
+            hanoiVisual?.ClearExcess();
+            hanoiGame = new HanoiGame(blockCount);
+            hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
         }
 
         private void gamePanel_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            blockCount = (int)blockCountInputField.Value;
+            InitGame();
         }
     }
 
@@ -44,8 +58,8 @@ namespace Tower_Of_Hanoi
             public int width;
             public int height;
             public Block block;
-            public Panel panel;          
-            public BlockInfo(Block block,Color color, int width, int height,Panel gameArea)
+            public Panel panel;
+            public BlockInfo(Block block, Color color, int width, int height, Panel gameArea)
             {
                 this.color = color;
                 this.width = width;
@@ -59,7 +73,7 @@ namespace Tower_Of_Hanoi
                 gameArea.Controls.Add(panel);
             }
 
-            public void ChangePosition(int x,int y)
+            public void ChangePosition(int x, int y)
             {
                 panel.Location = new Point(x, y);
             }
@@ -72,13 +86,21 @@ namespace Tower_Of_Hanoi
             this.gameArea = gameArea;
             panels[0] = panelA;
             panels[1] = panelB;
-            panels[2] = panelC;           
+            panels[2] = panelC;
             CalculateSize();
             CreateTowers();
             CreateBlocks();
             SetupBlocks();
         }
 
+        public void ClearExcess()
+        {
+            foreach(BlockInfo block in blockInfos)
+            {
+                gameArea.Controls.Remove(block.panel);
+                block.panel.Dispose();
+            }
+        }
         void CreateTowers()
         {
             visualTowers = new VisualTower[3];

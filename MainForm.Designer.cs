@@ -33,7 +33,17 @@
             this.tower2 = new System.Windows.Forms.Panel();
             this.tower1 = new System.Windows.Forms.Panel();
             this.sidePanel = new System.Windows.Forms.Panel();
+            this.scrollPanel = new System.Windows.Forms.Panel();
+            this.scrollForward = new System.Windows.Forms.Button();
+            this.scrollBack = new System.Windows.Forms.Button();
+            this.scrollIndıcator = new System.Windows.Forms.Label();
+            this.solveButton = new System.Windows.Forms.Button();
+            this.restartButton = new System.Windows.Forms.Button();
+            this.blockCountInputField = new System.Windows.Forms.NumericUpDown();
             this.gamePanel.SuspendLayout();
+            this.sidePanel.SuspendLayout();
+            this.scrollPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.blockCountInputField)).BeginInit();
             this.SuspendLayout();
             // 
             // gamePanel
@@ -75,10 +85,85 @@
             // sidePanel
             // 
             this.sidePanel.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.sidePanel.Controls.Add(this.scrollPanel);
+            this.sidePanel.Controls.Add(this.solveButton);
+            this.sidePanel.Controls.Add(this.restartButton);
+            this.sidePanel.Controls.Add(this.blockCountInputField);
             this.sidePanel.Location = new System.Drawing.Point(660, 15);
             this.sidePanel.Name = "sidePanel";
             this.sidePanel.Size = new System.Drawing.Size(200, 552);
             this.sidePanel.TabIndex = 1;
+            // 
+            // scrollPanel
+            // 
+            this.scrollPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.scrollPanel.Controls.Add(this.scrollForward);
+            this.scrollPanel.Controls.Add(this.scrollBack);
+            this.scrollPanel.Controls.Add(this.scrollIndıcator);
+            this.scrollPanel.Location = new System.Drawing.Point(43, 346);
+            this.scrollPanel.Name = "scrollPanel";
+            this.scrollPanel.Size = new System.Drawing.Size(120, 169);
+            this.scrollPanel.TabIndex = 3;
+            // 
+            // scrollForward
+            // 
+            this.scrollForward.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.scrollForward.Location = new System.Drawing.Point(83, 32);
+            this.scrollForward.Name = "scrollForward";
+            this.scrollForward.Size = new System.Drawing.Size(34, 23);
+            this.scrollForward.TabIndex = 2;
+            this.scrollForward.Text = ">>";
+            this.scrollForward.UseVisualStyleBackColor = true;
+            // 
+            // scrollBack
+            // 
+            this.scrollBack.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.scrollBack.Location = new System.Drawing.Point(3, 32);
+            this.scrollBack.Name = "scrollBack";
+            this.scrollBack.Size = new System.Drawing.Size(34, 23);
+            this.scrollBack.TabIndex = 1;
+            this.scrollBack.Text = "<<";
+            this.scrollBack.UseVisualStyleBackColor = true;
+            // 
+            // scrollIndıcator
+            // 
+            this.scrollIndıcator.AutoSize = true;
+            this.scrollIndıcator.Location = new System.Drawing.Point(43, 37);
+            this.scrollIndıcator.Name = "scrollIndıcator";
+            this.scrollIndıcator.Size = new System.Drawing.Size(30, 13);
+            this.scrollIndıcator.TabIndex = 0;
+            this.scrollIndıcator.Text = "1/31";
+            // 
+            // solveButton
+            // 
+            this.solveButton.Location = new System.Drawing.Point(43, 198);
+            this.solveButton.Name = "solveButton";
+            this.solveButton.Size = new System.Drawing.Size(120, 33);
+            this.solveButton.TabIndex = 2;
+            this.solveButton.Text = "Solve";
+            this.solveButton.UseVisualStyleBackColor = true;
+            // 
+            // restartButton
+            // 
+            this.restartButton.Location = new System.Drawing.Point(43, 124);
+            this.restartButton.Name = "restartButton";
+            this.restartButton.Size = new System.Drawing.Size(120, 33);
+            this.restartButton.TabIndex = 1;
+            this.restartButton.Text = "Restart";
+            this.restartButton.UseVisualStyleBackColor = true;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
+            // 
+            // blockCountInputField
+            // 
+            this.blockCountInputField.Location = new System.Drawing.Point(43, 50);
+            this.blockCountInputField.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.blockCountInputField.Name = "blockCountInputField";
+            this.blockCountInputField.Size = new System.Drawing.Size(120, 20);
+            this.blockCountInputField.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -90,6 +175,10 @@
             this.Name = "MainForm";
             this.Text = "Tower Of Hanoi";
             this.gamePanel.ResumeLayout(false);
+            this.sidePanel.ResumeLayout(false);
+            this.scrollPanel.ResumeLayout(false);
+            this.scrollPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.blockCountInputField)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -101,6 +190,13 @@
         private System.Windows.Forms.Panel tower1;
         private System.Windows.Forms.Panel tower3;
         private System.Windows.Forms.Panel tower2;
+        private System.Windows.Forms.Panel scrollPanel;
+        private System.Windows.Forms.Button scrollForward;
+        private System.Windows.Forms.Button scrollBack;
+        private System.Windows.Forms.Label scrollIndıcator;
+        private System.Windows.Forms.Button solveButton;
+        private System.Windows.Forms.Button restartButton;
+        private System.Windows.Forms.NumericUpDown blockCountInputField;
     }
 }
 
