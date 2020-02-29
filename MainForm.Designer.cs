@@ -156,14 +156,19 @@
             // blockCountInputField
             // 
             this.blockCountInputField.Location = new System.Drawing.Point(43, 50);
-            this.blockCountInputField.Maximum = new decimal(new int[] {
-            1000,
+            this.blockCountInputField.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
             this.blockCountInputField.Name = "blockCountInputField";
             this.blockCountInputField.Size = new System.Drawing.Size(120, 20);
             this.blockCountInputField.TabIndex = 0;
+            this.blockCountInputField.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // MainForm
             // 

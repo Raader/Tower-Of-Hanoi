@@ -14,7 +14,8 @@ namespace Tower_Of_Hanoi
     {
         HanoiGame hanoiGame;
         HanoiVisual hanoiVisual;
-        int blockCount = 3;
+        HanoiPlayer hanoiPlayer;
+        int blockCount = 5;
 
         public MainForm()
         {
@@ -27,6 +28,8 @@ namespace Tower_Of_Hanoi
             hanoiVisual?.ClearExcess();
             hanoiGame = new HanoiGame(blockCount);
             hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
+            hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3);
+            //hanoiVisual.Visualize(new HanoiGame.MoveInfo(hanoiGame.towers));
         }
 
         private void gamePanel_Paint(object sender, PaintEventArgs e)
@@ -39,6 +42,48 @@ namespace Tower_Of_Hanoi
             blockCount = (int)blockCountInputField.Value;
             InitGame();
         }
+    }
+
+    class HanoiPlayer
+    {
+        HanoiGame game;
+        Panel[] panels;
+        Panel lastTower;
+        int lastIndex;
+
+        public HanoiPlayer(HanoiGame game,Panel towerA,Panel towerB,Panel towerC)
+        {
+            this.game = game;
+            towerA.BackColor = Color.Gray;
+            towerB.BackColor = Color.Gray;
+            towerC.BackColor = Color.Gray;
+            towerA.Click += (sender, e) => TowerClicked(towerA,0);
+            towerB.Click += (sender, e) => TowerClicked(towerB,1);
+            towerC.Click += (sender, e) => TowerClicked(towerC,2);
+        }
+
+        void TowerClicked(Panel panel, int index)
+        {
+            if (lastTower == null)
+            {
+                lastTower = panel;
+                lastIndex = index;
+                panel.BackColor = Color.LightGray;
+            }
+            else if (lastTower == panel)
+            {
+                lastTower = null;
+                panel.BackColor = Color.Gray;
+            }
+            else
+            {
+                game.MoveBlock(game.towers[lastIndex], game.towers[index]);
+                lastTower.BackColor = Color.Gray;
+                lastTower = null;
+                panel.BackColor = Color.Gray;
+            }
+        }
+
     }
 
     class HanoiVisual
@@ -91,6 +136,7 @@ namespace Tower_Of_Hanoi
             CreateTowers();
             CreateBlocks();
             SetupBlocks();
+            game.BlockMoved += Visualize;
         }
 
         public void ClearExcess()
@@ -156,9 +202,21 @@ namespace Tower_Of_Hanoi
             }
         }
 
-        void Visualize(HanoiGame.MoveInfo move)
+        public void Visualize(HanoiGame.MoveInfo move)
         {
-
+            for (int i = 0; i <3; i++)
+            {
+                VisualTower visualTower = visualTowers[i];
+                for(int t = 0; t < game.blockCount; t++)
+                {
+                    Block block = move.towers[i][t];
+                    if (block == null)
+                    {
+                        continue;
+                    }
+                    visualTower.PlaceBlock(blockInfos[block.size - 1],t);
+                }
+            }
         }
 
     }

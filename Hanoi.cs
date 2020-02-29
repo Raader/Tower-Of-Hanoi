@@ -10,13 +10,19 @@ namespace Tower_Of_Hanoi
     {
         public Tower[] towers = new Tower[3];
         public int blockCount;
-        public event Action BlockMoved;
+        public delegate void MoveEvent(MoveInfo info);
+        public MoveEvent BlockMoved;
         public event Action GameFinished;
         public List<MoveInfo> moves = new List<MoveInfo>();
 
         public class MoveInfo
         {
+            public Tower[] towers;
 
+            public MoveInfo(Tower[] towers)
+            {
+                this.towers = towers;
+            }
         }
 
         public HanoiGame(int blockCount)
@@ -37,18 +43,18 @@ namespace Tower_Of_Hanoi
             }
         }
 
-        public void MoveBlock(int from, int to)
-        {
-            if (from > 3 || from < 0 || to > 3 || to < 0)
-            {
-                return; 
-            }
-            BlockMoved?.Invoke();
-        }
-
         public void MoveBlock(Tower from, Tower to)
         {
-            BlockMoved?.Invoke();
+            Block block = from.TopBlock;
+            if(block == null || !to.AddBlockToTop(block))
+            {
+                return;
+            }
+            from.TopBlock = null;
+            Tower[] curTowers = towers.Clone() as Tower[];
+            MoveInfo moveInfo = new MoveInfo(curTowers);
+            moves.Add(moveInfo);
+            BlockMoved?.Invoke(moveInfo);       
         }
 
         void CheckGame()
@@ -77,7 +83,7 @@ namespace Tower_Of_Hanoi
                 {
                     if (blocks[i] != null)
                     {
-                        return blocks[i];
+                        return blocks[i];   
                     }
                 }
                 return null;
@@ -89,6 +95,7 @@ namespace Tower_Of_Hanoi
                     if (blocks[i] != null)
                     {
                         blocks[i] = value;
+                        return;
                     }
                 }
             }
@@ -105,17 +112,23 @@ namespace Tower_Of_Hanoi
             return null;
         }
         
-        public void AddBlockToTop(Block block)
+        public bool AddBlockToTop(Block block)
         {
             for (int i = 0; i < blocks.Length; i++)
             {
                 if (i + 1 < blocks.Length && blocks[i + 1] != null && blocks[i+1] > block)
                 {
                     blocks[i] = block;
-                    return;
+                    return true;
+                }
+                else if(i + 1 < blocks.Length && blocks[i + 1] != null && blocks[i + 1] < block)
+                {
+                    return false;
                 }
             }
             blocks[blocks.Length - 1] = block;
+            return true;
+
         }
 
         public void RemoveFromTop()
