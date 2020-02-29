@@ -36,7 +36,7 @@
             this.scrollPanel = new System.Windows.Forms.Panel();
             this.scrollForward = new System.Windows.Forms.Button();
             this.scrollBack = new System.Windows.Forms.Button();
-            this.scrollIndıcator = new System.Windows.Forms.Label();
+            this.scrollIndicator = new System.Windows.Forms.Label();
             this.solveButton = new System.Windows.Forms.Button();
             this.restartButton = new System.Windows.Forms.Button();
             this.blockCountInputField = new System.Windows.Forms.NumericUpDown();
@@ -99,7 +99,7 @@
             this.scrollPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.scrollPanel.Controls.Add(this.scrollForward);
             this.scrollPanel.Controls.Add(this.scrollBack);
-            this.scrollPanel.Controls.Add(this.scrollIndıcator);
+            this.scrollPanel.Controls.Add(this.scrollIndicator);
             this.scrollPanel.Location = new System.Drawing.Point(43, 346);
             this.scrollPanel.Name = "scrollPanel";
             this.scrollPanel.Size = new System.Drawing.Size(120, 169);
@@ -125,14 +125,14 @@
             this.scrollBack.Text = "<<";
             this.scrollBack.UseVisualStyleBackColor = true;
             // 
-            // scrollIndıcator
+            // scrollIndicator
             // 
-            this.scrollIndıcator.AutoSize = true;
-            this.scrollIndıcator.Location = new System.Drawing.Point(43, 37);
-            this.scrollIndıcator.Name = "scrollIndıcator";
-            this.scrollIndıcator.Size = new System.Drawing.Size(30, 13);
-            this.scrollIndıcator.TabIndex = 0;
-            this.scrollIndıcator.Text = "1/31";
+            this.scrollIndicator.AutoSize = true;
+            this.scrollIndicator.Location = new System.Drawing.Point(43, 37);
+            this.scrollIndicator.Name = "scrollIndicator";
+            this.scrollIndicator.Size = new System.Drawing.Size(24, 13);
+            this.scrollIndicator.TabIndex = 0;
+            this.scrollIndicator.Text = "0/0";
             // 
             // solveButton
             // 
@@ -198,7 +198,7 @@
         private System.Windows.Forms.Panel scrollPanel;
         private System.Windows.Forms.Button scrollForward;
         private System.Windows.Forms.Button scrollBack;
-        private System.Windows.Forms.Label scrollIndıcator;
+        private System.Windows.Forms.Label scrollIndicator;
         private System.Windows.Forms.Button solveButton;
         private System.Windows.Forms.Button restartButton;
         private System.Windows.Forms.NumericUpDown blockCountInputField;

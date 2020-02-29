@@ -15,6 +15,7 @@ namespace Tower_Of_Hanoi
         HanoiGame hanoiGame;
         HanoiVisual hanoiVisual;
         HanoiPlayer hanoiPlayer;
+        MoveScroller moveScroller;
         int blockCount = 5;
 
         public MainForm()
@@ -28,7 +29,8 @@ namespace Tower_Of_Hanoi
             hanoiVisual?.ClearExcess();
             hanoiGame = new HanoiGame(blockCount);
             hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
-            hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3);
+            hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3,hanoiVisual);
+            moveScroller = new MoveScroller(hanoiGame, hanoiVisual, scrollForward, scrollBack, scrollIndicator);
             //hanoiVisual.Visualize(new HanoiGame.MoveInfo(hanoiGame.towers));
         }
 
@@ -44,16 +46,68 @@ namespace Tower_Of_Hanoi
         }
     }
 
+    class MoveScroller
+    {
+        HanoiGame game;
+        HanoiVisual visual;
+        Button forwardButton;
+        Button backwardButton;
+        Label indicator;
+
+        int scrollIndex = 0;
+        int ScrollIndex
+        {
+            set
+            {
+                if (value > game.moves.Count - 1 || value < 0)
+                {
+                    return;
+                }
+                scrollIndex = value;
+                UpdateLabel();
+            }
+            get
+            {
+                return scrollIndex;
+            }
+        }
+
+        public MoveScroller(HanoiGame game,HanoiVisual visual, Button forwardButton, Button backwardButton, Label indicator)
+        {
+            this.game = game;
+            this.forwardButton = forwardButton;
+            this.backwardButton = backwardButton;
+            this.visual = visual;   
+            this.indicator = indicator;
+            forwardButton.Click += (sender, e) => ChangeScroll(1);
+            backwardButton.Click += (sender, e) => ChangeScroll(-1);
+            game.BlockMoved += (moveInfo) => ScrollIndex = game.moves.Count - 1;
+        }
+
+        void ChangeScroll(int amount)
+        {
+            ScrollIndex += amount;
+        }
+
+        void UpdateLabel()
+        {
+            HanoiGame.MoveInfo move = game.moves[scrollIndex];
+            indicator.Text = (scrollIndex + 1).ToString() + "/" + game.moves.Count.ToString();
+        }
+    }
+
     class HanoiPlayer
     {
         HanoiGame game;
+        HanoiVisual visual;
         Panel[] panels;
         Panel lastTower;
         int lastIndex;
 
-        public HanoiPlayer(HanoiGame game,Panel towerA,Panel towerB,Panel towerC)
+        public HanoiPlayer(HanoiGame game,Panel towerA,Panel towerB,Panel towerC,HanoiVisual visual)
         {
             this.game = game;
+            this.visual = visual;
             towerA.BackColor = Color.Gray;
             towerB.BackColor = Color.Gray;
             towerC.BackColor = Color.Gray;
@@ -64,6 +118,10 @@ namespace Tower_Of_Hanoi
 
         void TowerClicked(Panel panel, int index)
         {
+            if( game.moves.Count != 0 && game.moves[game.moves.Count - 1] != visual.currentMove)
+            {
+                return;
+            }
             if (lastTower == null)
             {
                 lastTower = panel;
@@ -96,6 +154,7 @@ namespace Tower_Of_Hanoi
         BlockInfo[] blockInfos;
         VisualTower[] visualTowers;
         Panel gameArea;
+        public HanoiGame.MoveInfo currentMove;
 
         public class BlockInfo
         {
@@ -217,6 +276,7 @@ namespace Tower_Of_Hanoi
                     visualTower.PlaceBlock(blockInfos[block.size - 1],t);
                 }
             }
+            currentMove = move;
         }
 
     }
