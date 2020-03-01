@@ -31,9 +31,15 @@ namespace Tower_Of_Hanoi
             hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
             hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3,hanoiVisual);
             moveScroller = new MoveScroller(hanoiGame, hanoiVisual, scrollForward, scrollBack, scrollIndicator);
+            hanoiGame.GameFinished += FinishGame;
             //hanoiVisual.Visualize(new HanoiGame.MoveInfo(hanoiGame.towers));
         }
 
+        void FinishGame()
+        {
+            MessageBox.Show("You win", "congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            InitGame();
+        }
         private void gamePanel_Paint(object sender, PaintEventArgs e)
         {
 
@@ -65,6 +71,7 @@ namespace Tower_Of_Hanoi
                 }
                 scrollIndex = value;
                 UpdateLabel();
+                visual.Visualize(game.moves[scrollIndex]);
             }
             get
             {
@@ -195,7 +202,7 @@ namespace Tower_Of_Hanoi
             CreateTowers();
             CreateBlocks();
             SetupBlocks();
-            game.BlockMoved += Visualize;
+            //game.BlockMoved += Visualize;
         }
 
         public void ClearExcess()

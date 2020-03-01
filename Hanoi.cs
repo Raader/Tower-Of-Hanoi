@@ -51,17 +51,23 @@ namespace Tower_Of_Hanoi
                 return;
             }
             from.TopBlock = null;
-            Tower[] curTowers = towers.Clone() as Tower[];
+            Tower[] curTowers = new Tower[3];
+            for (int i = 0; i < 3; i++)
+            {
+                curTowers[i] = new Tower(blockCount);
+                curTowers[i].SetBlocks(towers[i].GetBlocks());
+            }
             MoveInfo moveInfo = new MoveInfo(curTowers);
             moves.Add(moveInfo);
-            BlockMoved?.Invoke(moveInfo);       
+            BlockMoved?.Invoke(moveInfo);
+            CheckGame();
         }
 
         void CheckGame()
         {
             for (int i= 0; i < blockCount; i++)
             {
-                if (towers[3][i] == null)
+                if (towers[2][i] == null)
                 {
                     return;
                 }
@@ -131,11 +137,18 @@ namespace Tower_Of_Hanoi
 
         }
 
-        public void RemoveFromTop()
+        public void SetBlocks(Block[] blocks)
         {
-
+            if(blocks.Length != this.blocks.Length)
+            {
+                return;
+            }
+            this.blocks = blocks;
         }
-
+        public Block[] GetBlocks()
+        {
+            return blocks.Clone() as Block[];
+        }
         public Block this[int index]
         {
             get
@@ -157,6 +170,11 @@ namespace Tower_Of_Hanoi
                 }
             }
 
+        }
+
+        public Tower GetCopy()
+        {
+            return this.MemberwiseClone() as Tower;
         }
 
     }
