@@ -108,22 +108,60 @@ namespace Tower_Of_Hanoi
         HanoiGame game;
         HanoiVisual visual;
         Panel[] panels;
-        Panel lastTower;
-        int lastIndex;
+        TowerPanel lastTower;
+        delegate void TowerClick(TowerPanel panel, int index);
+        TowerPanel[] towerPanels = new TowerPanel[3];
+
+        class TowerPanel
+        {
+            Panel panel;
+            int index;
+            public int Index { get;}
+            EventHandler eventHandler;
+            Color originColor = Color.Gray;
+            Color highlightColor = Color.LightGray;
+            bool highlighted;
+
+            public bool Highlighted
+            {
+                set
+                {
+                    highlighted = value;
+                    panel.BackColor = value ? highlightColor : originColor;
+                }
+                get
+                {
+                    return highlighted;
+                }
+            }
+
+            public TowerPanel(Panel panel, TowerClick del, int index)
+            {
+                this.panel = panel;
+                this.index = index;
+                panel.BackColor = originColor;
+                eventHandler = (sender, e) => del(this, index);
+                this.panel.Click += eventHandler;
+            }
+
+            public void DeleteEvent()
+            {
+                this.panel.Click -= eventHandler;
+            }
+        }
 
         public HanoiPlayer(HanoiGame game,Panel towerA,Panel towerB,Panel towerC,HanoiVisual visual)
         {
             this.game = game;
             this.visual = visual;
-            towerA.BackColor = Color.Gray;
-            towerB.BackColor = Color.Gray;
-            towerC.BackColor = Color.Gray;
-            towerA.Click += (sender, e) => TowerClicked(towerA,0);
-            towerB.Click += (sender, e) => TowerClicked(towerB,1);
-            towerC.Click += (sender, e) => TowerClicked(towerC,2);
+            Panel[] panels = new Panel[3] {towerA,towerB,towerC };
+            for (int i = 0; i < 3; i++)
+            {
+                towerPanels[i] = new TowerPanel(panels[i], TowerClicked, i);
+            }
         }
 
-        void TowerClicked(Panel panel, int index)
+        void TowerClicked(TowerPanel panel, int index)
         {
             if( game.moves.Count != 0 && game.moves[game.moves.Count - 1] != visual.currentMove)
             {
@@ -132,23 +170,26 @@ namespace Tower_Of_Hanoi
             if (lastTower == null)
             {
                 lastTower = panel;
-                lastIndex = index;
-                panel.BackColor = Color.LightGray;
+                panel.Highlighted = true;
             }
             else if (lastTower == panel)
             {
                 lastTower = null;
-                panel.BackColor = Color.Gray;
+                panel.Highlighted = false;
             }
             else
             {
-                game.MoveBlock(game.towers[lastIndex], game.towers[index]);
-                lastTower.BackColor = Color.Gray;
+                game.MoveBlock(game.towers[lastTower.Index], game.towers[index]);
+                lastTower.Highlighted = false;
                 lastTower = null;
-                panel.BackColor = Color.Gray;
+                panel.Highlighted = false;
             }
         }
 
+        public void Stop()
+        {
+
+        }
     }
 
     class HanoiVisual
@@ -181,9 +222,6 @@ namespace Tower_Of_Hanoi
                 panel.Width = width;
                 panel.BackColor = color;
                 panel.BringToFront();
-                Label label = new Label();
-                label.Text = block.size.ToString();
-                panel.Controls.Add(label);
                 gameArea.Controls.Add(panel);
             }
 
