@@ -181,6 +181,9 @@ namespace Tower_Of_Hanoi
                 panel.Width = width;
                 panel.BackColor = color;
                 panel.BringToFront();
+                Label label = new Label();
+                label.Text = block.size.ToString();
+                panel.Controls.Add(label);
                 gameArea.Controls.Add(panel);
             }
 
