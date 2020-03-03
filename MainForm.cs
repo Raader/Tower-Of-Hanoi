@@ -107,16 +107,15 @@ namespace Tower_Of_Hanoi
     {
         HanoiGame game;
         HanoiVisual visual;
-        Panel[] panels;
         TowerPanel lastTower;
-        delegate void TowerClick(TowerPanel panel, int index);
+        delegate void TowerClick(TowerPanel panel);
         TowerPanel[] towerPanels = new TowerPanel[3];
 
         class TowerPanel
         {
             Panel panel;
             int index;
-            public int Index { get;}
+            public int Index { get { return index; } }
             EventHandler eventHandler;
             Color originColor = Color.Gray;
             Color highlightColor = Color.LightGray;
@@ -140,7 +139,7 @@ namespace Tower_Of_Hanoi
                 this.panel = panel;
                 this.index = index;
                 panel.BackColor = originColor;
-                eventHandler = (sender, e) => del(this, index);
+                eventHandler = (sender, e) => del(this);
                 this.panel.Click += eventHandler;
             }
 
@@ -161,7 +160,7 @@ namespace Tower_Of_Hanoi
             }
         }
 
-        void TowerClicked(TowerPanel panel, int index)
+        void TowerClicked(TowerPanel panel)
         {
             if( game.moves.Count != 0 && game.moves[game.moves.Count - 1] != visual.currentMove)
             {
@@ -179,7 +178,7 @@ namespace Tower_Of_Hanoi
             }
             else
             {
-                game.MoveBlock(game.towers[lastTower.Index], game.towers[index]);
+                game.MoveBlock(game.towers[lastTower.Index], game.towers[panel.Index]);
                 lastTower.Highlighted = false;
                 lastTower = null;
                 panel.Highlighted = false;
@@ -222,6 +221,9 @@ namespace Tower_Of_Hanoi
                 panel.Width = width;
                 panel.BackColor = color;
                 panel.BringToFront();
+                Label label = new Label();
+                label.Text = block.size.ToString();
+                panel.Controls.Add(label);
                 gameArea.Controls.Add(panel);
             }
 
