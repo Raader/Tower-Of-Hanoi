@@ -52,34 +52,34 @@
             this.gamePanel.Controls.Add(this.tower3);
             this.gamePanel.Controls.Add(this.tower2);
             this.gamePanel.Controls.Add(this.tower1);
-            this.gamePanel.Location = new System.Drawing.Point(12, 15);
+            this.gamePanel.Location = new System.Drawing.Point(12, 12);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(626, 552);
+            this.gamePanel.Size = new System.Drawing.Size(829, 628);
             this.gamePanel.TabIndex = 0;
             this.gamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.gamePanel_Paint);
             // 
             // tower3
             // 
             this.tower3.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower3.Location = new System.Drawing.Point(498, 50);
+            this.tower3.Location = new System.Drawing.Point(646, 53);
             this.tower3.Name = "tower3";
-            this.tower3.Size = new System.Drawing.Size(26, 465);
+            this.tower3.Size = new System.Drawing.Size(30, 525);
             this.tower3.TabIndex = 2;
             // 
             // tower2
             // 
             this.tower2.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower2.Location = new System.Drawing.Point(298, 50);
+            this.tower2.Location = new System.Drawing.Point(396, 53);
             this.tower2.Name = "tower2";
-            this.tower2.Size = new System.Drawing.Size(26, 465);
+            this.tower2.Size = new System.Drawing.Size(30, 525);
             this.tower2.TabIndex = 1;
             // 
             // tower1
             // 
             this.tower1.BackColor = System.Drawing.SystemColors.GrayText;
-            this.tower1.Location = new System.Drawing.Point(98, 50);
+            this.tower1.Location = new System.Drawing.Point(146, 53);
             this.tower1.Name = "tower1";
-            this.tower1.Size = new System.Drawing.Size(26, 465);
+            this.tower1.Size = new System.Drawing.Size(30, 525);
             this.tower1.TabIndex = 0;
             // 
             // sidePanel
@@ -89,10 +89,11 @@
             this.sidePanel.Controls.Add(this.solveButton);
             this.sidePanel.Controls.Add(this.restartButton);
             this.sidePanel.Controls.Add(this.blockCountInputField);
-            this.sidePanel.Location = new System.Drawing.Point(660, 15);
+            this.sidePanel.Location = new System.Drawing.Point(847, 15);
             this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(200, 552);
+            this.sidePanel.Size = new System.Drawing.Size(217, 625);
             this.sidePanel.TabIndex = 1;
+            this.sidePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.sidePanel_Paint);
             // 
             // scrollPanel
             // 
@@ -175,11 +176,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(898, 594);
+            this.ClientSize = new System.Drawing.Size(1076, 652);
             this.Controls.Add(this.sidePanel);
             this.Controls.Add(this.gamePanel);
             this.Name = "MainForm";
             this.Text = "Tower Of Hanoi";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.gamePanel.ResumeLayout(false);
             this.sidePanel.ResumeLayout(false);
             this.scrollPanel.ResumeLayout(false);

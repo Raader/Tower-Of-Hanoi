@@ -16,6 +16,7 @@ namespace Tower_Of_Hanoi
         HanoiVisual hanoiVisual;
         HanoiPlayer hanoiPlayer;
         MoveScroller moveScroller;
+        HanoiSolver hanoiSolver;
         int blockCount = 5;
 
         public MainForm()
@@ -28,6 +29,7 @@ namespace Tower_Of_Hanoi
         {
             hanoiVisual?.ClearExcess();
             hanoiPlayer?.Stop();
+            hanoiSolver = null;
             hanoiGame = new HanoiGame(blockCount);
             hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
             hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3,hanoiVisual);
@@ -38,6 +40,10 @@ namespace Tower_Of_Hanoi
 
         void FinishGame()
         {
+            if(hanoiSolver != null)
+            {
+                return;
+            }
             MessageBox.Show("You win", "congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
             InitGame();
         }
@@ -55,6 +61,19 @@ namespace Tower_Of_Hanoi
         private void solveButton_Click(object sender, EventArgs e)
         {
             hanoiPlayer.Stop();
+            InitGame();
+            hanoiSolver = new HanoiSolver(hanoiGame);
+            hanoiSolver.Solve();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sidePanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 
@@ -285,31 +304,40 @@ namespace Tower_Of_Hanoi
             }
             else if (game.blockCount > 25)
             {
-                factor = 2;
+                factor = 1;
             }
             else if(game.blockCount > 10)
             {
-                factor = 3;
+                factor = 2;
             }
             else
             {
-                factor = 4;
+                factor = 3;
             }
-            panelHeight = (panel.Height - padding) / (game.blockCount * factor);
-            panelWidhtFactor = 200 / game.blockCount;
+            panelHeight = (panel.Height - padding * 2) / (game.blockCount * factor);
+            panelWidhtFactor = 250 / game.blockCount;
         }
 
         void CreateBlocks()
         {
             blockInfos = new BlockInfo[game.blockCount];
             bool bol = true;
+            Color[] colors = new Color[] { Color.Red, Color.Blue, Color.Yellow, Color.Green, Color.Magenta,Color.Aqua,
+            Color.DarkBlue,Color.DarkGreen,Color.DarkRed,Color.LightCyan,Color.LightYellow};
+            Random random = new Random();
+            int colorCount = 0;
             for (int i = 0; i < blockInfos.Length; i++)
             {
                 int width = Math.Max(panelWidhtFactor * (i + 1), panels[0].Width + 10);
-                Color color = bol ? Color.Red : Color.Blue;
+                Color color = colors[colorCount];
                 BlockInfo block = new BlockInfo(game.towers[0][i], color, width, panelHeight,gameArea);
                 blockInfos[i] = block;
                 bol = !bol;
+                colorCount++;
+                if(colorCount >= colors.Length)
+                {
+                    colorCount = 0;
+                }
             }
         }
 
