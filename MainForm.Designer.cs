@@ -89,9 +89,9 @@
             this.sidePanel.Controls.Add(this.solveButton);
             this.sidePanel.Controls.Add(this.restartButton);
             this.sidePanel.Controls.Add(this.blockCountInputField);
-            this.sidePanel.Location = new System.Drawing.Point(847, 15);
+            this.sidePanel.Location = new System.Drawing.Point(847, 12);
             this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(217, 625);
+            this.sidePanel.Size = new System.Drawing.Size(217, 628);
             this.sidePanel.TabIndex = 1;
             this.sidePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.sidePanel_Paint);
             // 
