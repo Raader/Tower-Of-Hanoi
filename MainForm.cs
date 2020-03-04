@@ -27,6 +27,7 @@ namespace Tower_Of_Hanoi
         private void InitGame()
         {
             hanoiVisual?.ClearExcess();
+            hanoiPlayer?.Stop();
             hanoiGame = new HanoiGame(blockCount);
             hanoiVisual = new HanoiVisual(hanoiGame, tower1, tower2, tower3, gamePanel);
             hanoiPlayer = new HanoiPlayer(hanoiGame, tower1, tower2, tower3,hanoiVisual);
@@ -50,6 +51,11 @@ namespace Tower_Of_Hanoi
             blockCount = (int)blockCountInputField.Value;
             InitGame();
         }
+
+        private void solveButton_Click(object sender, EventArgs e)
+        {
+            hanoiPlayer.Stop();
+        }
     }
 
     class MoveScroller
@@ -65,7 +71,7 @@ namespace Tower_Of_Hanoi
         {
             set
             {
-                if (value > game.moves.Count - 1 || value < 0)
+                if ( value >= game.moves.Count || value < 0)
                 {
                     return;
                 }
@@ -86,6 +92,7 @@ namespace Tower_Of_Hanoi
             this.backwardButton = backwardButton;
             this.visual = visual;   
             this.indicator = indicator;
+            indicator.Text = "0/0";
             forwardButton.Click += (sender, e) => ChangeScroll(1);
             backwardButton.Click += (sender, e) => ChangeScroll(-1);
             game.BlockMoved += (moveInfo) => ScrollIndex = game.moves.Count - 1;
@@ -99,7 +106,7 @@ namespace Tower_Of_Hanoi
         void UpdateLabel()
         {
             HanoiGame.MoveInfo move = game.moves[scrollIndex];
-            indicator.Text = (scrollIndex + 1).ToString() + "/" + game.moves.Count.ToString();
+            indicator.Text = (scrollIndex).ToString() + "/" + (game.moves.Count - 1).ToString();
         }
     }
 
@@ -187,7 +194,10 @@ namespace Tower_Of_Hanoi
 
         public void Stop()
         {
-
+            foreach(TowerPanel towerPanel in towerPanels)
+            {
+                towerPanel.DeleteEvent();
+            }
         }
     }
 
@@ -245,6 +255,7 @@ namespace Tower_Of_Hanoi
             CreateTowers();
             CreateBlocks();
             SetupBlocks();
+            currentMove = game.originTowers;
             //game.BlockMoved += Visualize;
         }
 

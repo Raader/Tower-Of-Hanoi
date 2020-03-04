@@ -14,6 +14,7 @@ namespace Tower_Of_Hanoi
         public MoveEvent BlockMoved;
         public event Action GameFinished;
         public List<MoveInfo> moves = new List<MoveInfo>();
+        public MoveInfo originTowers;
 
         public class MoveInfo
         {
@@ -29,6 +30,14 @@ namespace Tower_Of_Hanoi
         {
             this.blockCount = blockCount;
             SetupTowers();
+            Tower[] curTowers = new Tower[3];
+            for (int i = 0; i < 3; i++)
+            {
+                curTowers[i] = new Tower(blockCount);
+                curTowers[i].SetBlocks(towers[i].GetBlocks());
+            }
+            originTowers = new MoveInfo(curTowers);
+            moves.Add(originTowers);
         }
 
         void SetupTowers()
